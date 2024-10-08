@@ -1,0 +1,44 @@
+Синтаксический анализ кода на C++.
+      TYPE        |        int        |          0
+        ID        |       main        |          1
+ DELIMITER        |          (        |          2
+ DELIMITER        |          )        |          3
+ DELIMITER        |          {        |          4
+      TYPE        |        int        |          5
+        ID        |          a        |          6
+        OP        |          =        |          7
+     CONST        |          5        |          8
+ DELIMITER        |          ;        |          9
+      TYPE        |        int        |         10
+        ID        |          b        |         11
+        OP        |          =        |         12
+     CONST        |          6        |         13
+ DELIMITER        |          ;        |         14
+        ID        |          a        |         15
+        OP        |          =        |         16
+        ID        |          a        |         17
+        OP        |          +        |         18
+        ID        |          b        |         19
+ DELIMITER        |          ;        |         20
+        OP        |      while        |         21
+ DELIMITER        |          (        |         22
+        ID        |          b        |         23
+       ROP        |         <=        |         24
+        ID        |          a        |         25
+ DELIMITER        |          )        |         26
+ DELIMITER        |          {        |         27
+        ID        |          b        |         28
+        OP        |          =        |         29
+        ID        |          b        |         30
+        OP        |          +        |         31
+        ID        |          a        |         32
+ DELIMITER        |          ;        |         33
+ DELIMITER        |          }        |         34
+        OP        |     return        |         37
+     CONST        |          0        |         38
+ DELIMITER        |          ;        |         39
+ DELIMITER        |          }        |         40
+Лексемы, которые не удалось распознать:
+     ERROR        |     @error        |         35
+Комментарии
+     DESCR        |  @notError        |         36
