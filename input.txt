@@ -1,11 +1,12 @@
 int main(){
-int a = 5;
+int a, b, c;
+int; 
 int b = 6;
 a = a + b;
-while (b <= a){
+while (b <= a ){
 b = b + a;
 }
 @error
 // @notError
-return 0;
+return 01 ;
 }

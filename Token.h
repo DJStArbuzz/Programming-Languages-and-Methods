@@ -25,15 +25,25 @@ using namespace std;
 */
 
 enum class TokenType {
-    TYPE,           // int
-    ID,             // id_name
-    OP,             // =, while, +, -, return
-    ROP,            // →, == | != | < | > | <= | >=
-    DELIMITER,      // ;, ',', (), [], {}
-    CONST,          // const int num
-    DESCR,          
-    UNKNOWN,        // tmp
+    FUNCTION,
+    BEGIN,
+    END,
+    FN,
+    DESCRIPTIONS,
+    OPERATORS,
+    DESCR,
+    VARLIST,
+    TYPE,
+    OP,
+    SIMPLEEXPR,
+    EXPR,
+    CONDITION,
+    ROP,
+    ID,
+    CONST,
+    DELIMITER,
     ERROR,
+    UNKNOWN
 };
 
 class Token {
