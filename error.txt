@@ -1,0 +1,4 @@
+  21 |      ERROR        |     while1        |        176
+   5 |      ERROR        |         a1        |       3056
+  11 |      ERROR        |       int@        |       7425
+  10 |      ERROR        |      int1a        |       9807
