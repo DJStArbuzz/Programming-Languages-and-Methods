@@ -24,7 +24,8 @@ enum class TokenType {
     THEN,           // Then statement       
     SIMPLEEXPR,     // Id | Const | ( Expr ) Expr → SimpleExpr | SimpleExpr + Expr | SimpleExpr - Expr
     ROP,            // == | != | < | > | <= | >=
-    UNKNOWN
+    UNKNOWN,
+    END_LINE,
 };
 
 class Token {

@@ -1,0 +1,103 @@
+Function
+  Begin
+    Type
+       int  [KeyWord]
+    FunctionName
+       main  [Id]
+    (  [StaplesL]
+    )  [StaplesR]
+    {  [CurlyBraceL]
+  Descriptions
+    Descr
+       Type
+          int  [KeyWord]
+       Varlist
+            a  [Id]
+          ,  [Comma]
+          VarList
+                 b  [Id]
+                ,  [Comma]
+                VarList
+                    c   [Id]
+    ;  [Semicolon]
+  Descriptions
+    Descr
+       Type
+          int  [KeyWord]
+       Varlist
+         x  [Id]
+    ;  [Semicolon]
+  Operators
+    Op
+       a  [Id]
+        =  [AssignmentOperator]
+         Expr
+               SimpleExpr
+               x  [Id]
+         +  [MathematicalOperation]
+          Expr
+                  SimpleExpr
+                  4  [Const]
+       ;  [Semicolon]
+  Operators
+    Op
+       b  [Id]
+        =  [AssignmentOperator]
+         Expr
+               SimpleExpr
+               a  [Id]
+         +  [MathematicalOperation]
+          Expr
+                  SimpleExpr
+                  x  [Id]
+       ;  [Semicolon]
+  Operators
+    Op
+       c  [Id]
+        =  [AssignmentOperator]
+         Expr
+               SimpleExpr
+               a  [Id]
+         +  [MathematicalOperation]
+          Expr
+                  SimpleExpr
+                  b  [Id]
+       ;  [Semicolon]
+  Operators
+    Op
+       while [KeyWord]
+       (  [StaplesL]
+         Conditon
+        Expr
+            SimpleExpr
+              b  [Id]
+      +  [MathematicalOperation]
+              Expr
+                  SimpleExpr
+                    3  [Const]
+            >= [RelationOperator]
+        Expr
+            SimpleExpr
+              b  [Id]
+      +  [MathematicalOperation]
+              Expr
+                  SimpleExpr
+                    3  [Const]
+            +  [MathematicalOperation]
+                    Expr
+                        SimpleExpr
+                          a  [Id]
+       )  [StaplesR]
+       {  [CurlyBraceL]
+  Operators
+    Op
+       x  [Id]
+        =  [AssignmentOperator]
+         Expr
+               SimpleExpr
+               a  [Id]
+         +  [MathematicalOperation]
+          Expr
+                  SimpleExpr
+                  b  [Id]
+       ;  [Semicolon]

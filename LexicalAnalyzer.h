@@ -1,13 +1,12 @@
-﻿#ifndef LEXICAL_ANALYZER_H
-#define LEXICAL_ANALYZER_H
+#ifndef LEXICALANALYZER_H
+#define LEXICALANALYZER_H
 
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "HashTableClass.h"
-#include "Token.h"
+#include "HashTable.h"
+#include "SintaksisAnalyzer.h"
 
-using namespace std;
 class LexicalAnalyzer {
 public:
     LexicalAnalyzer(const string& input, const string& output, const string& error) {
@@ -23,25 +22,32 @@ public:
         if (errorTxtFile.is_open())
             errorTxtFile.close();
     };
+
+    SyntaxAnalyzer sintaksis_analyzer;
+    string lexeme;
+    int count_line = 0;
+    int count = 0;
     void lexAnBeg();
+
+    TokenList& getTokenList() {
+        return tokenList;
+    }
 
 private:
     ifstream testTxtFile;                                   // cin
     ofstream resultTxtFile;                                 // out
-    ofstream errorTxtFile;                                  // out with error
-    
-    HashTable tokenList;                                    // Hash-table
+    ofstream errorTxtFile;
+    TokenList tokenList;
+    string sent = "";
+    const string tree = "parsing_tree.txt";
 
+    Token getNextLexeme();
+    Token isKeyWord(ifstream& testTxtFile, int index, int num, char c); // checking for int, while, return
     bool isOperator(char elem) const;                       // Checking whether the operator is
     bool isRelationOperator(char elem) const;               // Checking whether a character is a comparison operator
     bool isDelimiter(char elem) const;                      // Checking whether the character is a separator
     bool isDigit(const string& lexeme);                     // checking for exceptional numbers
     bool isValidIdentifier(const string& lexeme) const;     // checking for the exceptional presence of letters
-    
-    // checking the next token
-    Token getNextLexeme();
-    // checking for int, while, return
-    Token isKeyWord(ifstream& testTxtFile, int index, int num, char c);
-  };
+};
 
-#endif
+#endif // LEXICALANALYZER_H

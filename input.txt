@@ -1,13 +1,9 @@
 int main(){
-int a1, b, c;
-int1a; 
-int@
-int b = 6;
-a = a + b;
-while (b <= a ){
-b = b + a;
-}
-while (b>a){c = a - b;}
-while1;
-return 0;
-}
+int  a, b, c ;
+int  x;
+a=x+4 ;
+b = a + x ;
+c= a + b ;
+while (x-2 <=b+3+a){
+x = a + b;
+return 0;}

@@ -3,18 +3,20 @@
    2 |  DELIMITER        |          (        |         40
    3 |  DELIMITER        |          )        |         41
    4 |  DELIMITER        |          {        |        123
+   5 |    ID_NAME        |          a        |         97
    6 |  DELIMITER        |          ,        |         44
    7 |    ID_NAME        |          b        |         98
    8 |    ID_NAME        |          c        |         99
    9 |  DELIMITER        |          ;        |         59
-  12 |         OP        |          =        |         61
-  13 |      CONST        |          6        |         54
-  14 |    ID_NAME        |          a        |         97
-  15 |         OP        |          +        |         43
-  16 |         OP        |      while        |       1617
+  10 |    ID_NAME        |          x        |        120
+  11 |         OP        |          =        |         61
+  12 |         OP        |          +        |         43
+  13 |      CONST        |          4        |         52
+  14 |         OP        |      while        |       1617
+  15 |         OP        |          -        |         45
+  16 |      CONST        |          2        |         50
   17 |        ROP        |         <=        |       1921
-  18 |  DELIMITER        |          }        |        125
-  19 |        ROP        |          >        |         62
-  20 |         OP        |          -        |         45
-  22 |        END        |     return        |        672
-  23 |      CONST        |          0        |         48
+  18 |      CONST        |          3        |         51
+  19 |        END        |     return        |        672
+  20 |      CONST        |          0        |         48
+  21 |  DELIMITER        |          }        |        125
