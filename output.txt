@@ -12,11 +12,12 @@
   11 |         OP        |          =        |         61
   12 |         OP        |          +        |         43
   13 |      CONST        |          4        |         52
-  14 |         OP        |      while        |       1617
-  15 |         OP        |          -        |         45
-  16 |      CONST        |          2        |         50
-  17 |        ROP        |         <=        |       1921
-  18 |      CONST        |          3        |         51
-  19 |        END        |     return        |        672
-  20 |      CONST        |          0        |         48
-  21 |  DELIMITER        |          }        |        125
+  14 |      CONST        |          5        |         53
+  15 |         OP        |      while        |       1617
+  16 |         OP        |          -        |         45
+  17 |      CONST        |          2        |         50
+  18 |        ROP        |         <=        |       1921
+  19 |      CONST        |          3        |         51
+  20 |        END        |     return        |        672
+  21 |      CONST        |          0        |         48
+  22 |  DELIMITER        |          }        |        125

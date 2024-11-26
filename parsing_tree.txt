@@ -38,6 +38,10 @@ Function
           Expr
                   SimpleExpr
                   4  [Const]
+          +  [MathematicalOperation]
+           Expr
+                     SimpleExpr
+                     5  [Const]
        ;  [Semicolon]
   Operators
     Op

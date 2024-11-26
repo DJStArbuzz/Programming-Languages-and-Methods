@@ -86,6 +86,26 @@ bool SyntaxAnalyzer::isValidOperator(const string opLine, const int count_line) 
         line.pop_back();
     }
 
+    int lS = 0, rS = 0;
+    for (int i = 0; i < line.size(); i++) {
+        if (line[i] == '(') {
+            line[i] = ' ';
+            lS++;
+            continue;
+        }
+        if (line[i] == ')') {
+            rS++;
+            line[i] = ' ';
+            continue;
+        }
+    }
+    cout << rS << " " << lS << endl;
+    if (lS != rS) {
+        is_error_flag = true;
+        error(count_line, opLine, "Неправмльное  написание оператора ().");
+        return false;
+    }
+
     string error_;
     int count_words = 0;
     // Разделяем строку на токены
@@ -156,6 +176,7 @@ bool SyntaxAnalyzer::isValidOperator(const string opLine, const int count_line) 
         maybe_error1 = flag;
         return false;
     }
+    cout << "correct\n";
     // Если дошли до сюда, строка корректна
     return true;
 }
@@ -499,8 +520,13 @@ void SyntaxAnalyzer::draw_operators(const string cline, int num) {
     if (flag) {
         line.pop_back();
     }
-
     line = cline.substr(0, line.find("=")) + " = " + cline.substr(line.find("=") + 1);
+    for (int i = 0; i < line.size(); i++) {
+        if (line[i] == '(' || line[i] == ')') {
+            line[i] = ' ';
+        }
+    }
+
     string* tokens = split(line, count_words);
 
     string left_var = tokens[0];

@@ -1,7 +1,7 @@
-int main(){
+int main( ) {
 int  a, b, c ;
 int  x;
-a=x+4 ;
+a= ( x+4) + 5;
 b = a + x ;
 c= a + b ;
 while (x-2 <=b+3+a){
