@@ -1,3 +1,4 @@
+п»ї#pragma once
 #pragma once
 #ifndef TOKENLIST_H
 #define TOKENLIST_H
@@ -5,9 +6,11 @@
 #include "Token.h"
 #include <fstream>
 
-class TokenList {
+using namespace std;
+
+class HashTable {
 public:
-    TokenList() : tokenCount(0) {
+    HashTable() : tokenCount(0) {
         for (int i = 0; i < HASH_TABLE_SIZE; ++i) {
             hashTable[i] = nullptr;
         }
@@ -16,7 +19,7 @@ public:
         }
     }
 
-    ~TokenList() {
+    ~HashTable() {
         for (int i = 0; i < HASH_TABLE_SIZE; ++i) {
             delete hashTable[i];
         }
@@ -25,13 +28,13 @@ public:
         }
     }
 
-    static const int MAX_TOKENS = 10000; // Максимальное количество токенов
-    Token* tokenSequence[MAX_TOKENS]; // Для вывода токенов по порядку
+    static const int MAX_TOKENS = 10000; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    Token* tokenSequence[MAX_TOKENS]; // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     void addToken(const Token& token);
     int hashFunction(const std::string& lexeme) const;
 
     // output arrays to the console and text files
-    void printTokensToFiles(ofstream& outputFile, ofstream& errorFile);
+    void printTokensToFiles();
     void printTokensToConsole();
 
     int getIndex(int i) {
@@ -43,7 +46,7 @@ private:
     static const int HASH_SIZE = 10000;  // size max
     Token* hashTable[HASH_TABLE_SIZE];
 
-    int tokenCount; // Счетчик количества добавленных токенов
+    int tokenCount; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 };
 
 #endif 

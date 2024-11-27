@@ -47,12 +47,15 @@ string Token::getType() {
     case TokenType::DELIMITER:
         tokenType = "DELIMITER";
         break;
-    case TokenType::ID_NAME:
+    case TokenType::ID:
         tokenType = "ID_NAME";
         break;
     case TokenType::ERROR:
         tokenType = "ERROR";
         break;
+    case TokenType::END_OF_FILE:
+            tokenType = "END_OF_FILE";
+            break;
     default:
         tokenType = "UNKNOWN";
         break;

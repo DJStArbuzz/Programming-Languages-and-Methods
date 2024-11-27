@@ -1,12 +1,21 @@
-﻿#ifndef TOKEN_H
-#define TOKEN_H
+﻿#pragma once
+// Заголовочный файл описывает структуру токенов, которые генерирует лексер. 
+#ifndef TOKEN_H 
+#define TOKEN_H 
 
-#include <string>
-#include <fstream>
+#include <string> 
 
 using namespace std;
 
-enum class TokenType {
+// Типы токенов, соответствующие различным элементам языка. 
+enum TokenType {
+    WORDS_KEY, // Ключевые слова 
+    ID, // Идентификаторы 
+    SYMBOLS_OF_OPERATION, // Операторы 
+    SYMBOLS_OF_SEPARATING, // Разделители 
+    END_OF_FILE, // Конец файла 
+
+
     PROGRAM,        // Program -> Begin Descriptions Operators End
     BEGIN,          // Type FunctionName() {
     END,            // return Id ; }
@@ -28,19 +37,23 @@ enum class TokenType {
     END_LINE,
 };
 
-class Token {
-public:
-    TokenType type;
-    string lexeme;
-    int index = -1;
+// Структура Token содержит информацию о типе, значении и местоположении токена. 
+struct Token {
+    TokenType type; // Тип токена 
+    std::string value; // Текстовое значение токена 
+    int line; // Номер строки 
+    int column; // Номер столбца 
+    //string tokenLexeme;
+    int index;
     int hash;
-    Token() : type(TokenType::UNKNOWN), lexeme(""), index(-1), hash(0) {}
 
-    Token(TokenType t, const string& lex, int idx, int hsh) : type(t), lexeme(lex), index(idx), hash(hsh) {}
+    Token(TokenType type = UNKNOWN, const string& value = "", int line = 0, int column = 0, int index=0, int hash = 0)
+        : type(type), value(value), line(line), column(column), index(index), hash(hash) {
+        
+    }
 
-    int getIndex();   // print index
-    string getType(); // Recognition of the type of token for information output
+    int getIndex();  
+    string getType();
 };
 
-
-#endif 
+#endif // TOKEN_H
