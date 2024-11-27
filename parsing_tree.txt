@@ -12,7 +12,7 @@ Function
        Type
           int  [KeyWord]
        Varlist
-            a  [Id]
+           a  [Id]
           ,  [Comma]
           VarList
                  b  [Id]
@@ -71,26 +71,26 @@ Function
     Op
        while [KeyWord]
        (  [StaplesL]
-         Conditon
+       Conditon
         Expr
-            SimpleExpr
-              b  [Id]
-      +  [MathematicalOperation]
+         SimpleExpr
+               b  [Id]
+       +  [MathematicalOperation]
               Expr
-                  SimpleExpr
-                    3  [Const]
-            >= [RelationOperator]
+           SimpleExpr
+                     3  [Const]
+                   >= [RelationOperator]
         Expr
-            SimpleExpr
-              b  [Id]
-      +  [MathematicalOperation]
+         SimpleExpr
+               b  [Id]
+       +  [MathematicalOperation]
               Expr
-                  SimpleExpr
-                    3  [Const]
-            +  [MathematicalOperation]
+           SimpleExpr
+                     3  [Const]
+         +  [MathematicalOperation]
                     Expr
-                        SimpleExpr
-                          a  [Id]
+             SimpleExpr
+                           a  [Id]
        )  [StaplesR]
        {  [CurlyBraceL]
   Operators
@@ -103,5 +103,11 @@ Function
          +  [MathematicalOperation]
           Expr
                   SimpleExpr
-                  b  [Id]
+                  b;}  [Const]
        ;  [Semicolon]
+    }  [Separator]
+  End
+    return  [KeyWord]
+    0  [Const]
+    ;  [Semicolon]
+    }  [CurlyBraceR]

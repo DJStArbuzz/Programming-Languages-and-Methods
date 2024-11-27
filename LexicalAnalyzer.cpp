@@ -86,7 +86,6 @@ Token LexicalAnalyzer::getNextLexeme() {
 
     while (testTxtFile.get(elem)) {
         if (elem == '\n' || elem == '\r' || elem == '\n\r') {
-            cout << sent << '\n';
             count_line++;
             if (!sent.empty() && sent != "\n") {
                 sintaksis_analyzer.trim(sent);

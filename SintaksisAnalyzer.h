@@ -26,43 +26,41 @@ public:
         }
     }
     
-    bool maybe_error1 = false; // отсутствие левой фигурной скобки
+    bool maybe_error1 = false; 
     int maybe_error2 = 0;
     int dist = 2;
 
-    void error(const int count_line, const string line, const string type_error);                    // Метод для вывода ошибок 
-    void building_tree(const int count_line, const string line);            // Метод для построения дерева разбора
+    void error(const int count_line, const string line, const string type_error);           
+    void building_tree(const int count_line, const string line); 
     string* split(const string line, int& numWords);
 
     bool isValidIdentifier(const string word); 
     bool isValidExpression(const string expr);
     bool isValidOperator  (const string line, const int count_line);
-    bool is_cycle         (const string line, const int count_line);
-    bool is_start_program (const string line, const int count_line);  
-    bool is_end_program   (const string line, const int count_line); 
-    bool is_descriptions  (const string line, const int count_line); 
-    bool is_condition     (const string line, const int count_line); 
+    bool isWhile         (const string line, const int count_line);
+    bool isBegin (const string line, const int count_line);  
+    bool isEnd   (const string line, const int count_line); 
+    bool isDescriptions  (const string line, const int count_line); 
+    bool isCondition     (const string line, const int count_line); 
 
-    void draw_cycle          (const string line, int num); 
-    void draw_start_program  (const string line); 
-    void draw_end_program    (const string line); 
-    void draw_descriptions   (const string line, int num); 
-    void draw_operators      (const string line, int num);
-    void draw_operators_cycle(const string line, int num); 
-    void draw_varlist        (const string line, int num); 
-    void draw_expression     (const string& expr, const string& indent, int num);
-    void draw_condition      (const string line, int num);
-    bool tmp_print(string*& tokens, int count_words, int num);
+    void printWhile          (const string line, int num); 
+    void printBegin  (const string line); 
+    void printEnd    (const string line); 
+    void printDescriptions   (const string line, int num); 
+    void printOperators      (const string line, int num);
+    void printOpearatorsWhile(const string line, int num); 
+    void printVarList        (const string line, int num); 
+    void printExpression     (const string& expr, const string& indent, int num);
+    void printCondition      (const string line, int num);
+    bool printExpr(string*& tokens, int count_words, int num);
 
     void printWhiteSpace(const int n);
 
     void trim(std::string& str) {
-        // Удаляем пробелы с начала строки
         str.erase(str.begin(), find_if(str.begin(), str.end(), [](unsigned char ch) {
             return !isspace(ch);
             }));
 
-        // Удаляем пробелы с конца строки
         str.erase(find_if(str.rbegin(), str.rend(), [](unsigned char ch) {
             return !isspace(ch);
             }).base(), str.end());
@@ -70,9 +68,8 @@ public:
 
 private:
     bool is_error_flag = false;
-    
 
-    ofstream outputFile;  // Поток для записи в файл
+    ofstream outputFile;  
 };
 
 #endif

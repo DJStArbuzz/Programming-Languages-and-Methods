@@ -7,57 +7,52 @@
 
 using namespace std;
 
-void SyntaxAnalyzer::printWhiteSpace(const int n){
+void SyntaxAnalyzer::printWhiteSpace(const int n) {
     for (int i = 0; i < n; i++) {
         outputFile << " ";
     }
 }
 bool SyntaxAnalyzer::isValidIdentifier(const string word) {
     for (char c : word) {
-        if (!isalpha(c)) { // Если символ не является буквой
+        if (!isalpha(c)) {
             return false;
         }
     }
     return true;
 }
 
-// Проверка, является ли строка валидным выражением (пока допускаем только числа)
 bool SyntaxAnalyzer::isValidExpression(const string expr) {
     return !expr.empty() && std::all_of(expr.begin(), expr.end(), ::isdigit);
 }
 
 string* SyntaxAnalyzer::split(const std::string line, int& numWords) {
-    static const int MAX_WORDS = 30;  // Максимальное количество слов
-    static string words[MAX_WORDS];  // Статический массив слов
-
-    // Очистка массива перед использованием
+    static const int MAX_WORDS = 30; 
+    static string words[MAX_WORDS];
     for (int i = 0; i < MAX_WORDS; i++) {
         words[i].clear();
     }
 
     size_t start = 0;
-    size_t end = line.find(' '); // Находим первый пробел
-    numWords = 0;                // Счётчик слов
+    size_t end = line.find(' '); 
+    numWords = 0;                
 
     // Разделение строки на слова
     while (end != string::npos && numWords < MAX_WORDS) {
         string word = line.substr(start, end - start);
-        if (!word.empty()) { // Добавляем слово, только если оно не пустое
+        if (!word.empty()) {
             words[numWords++] = word;
         }
         start = end + 1;
-        end = line.find(' ', start); // Находим следующий пробел
+        end = line.find(' ', start); 
     }
 
-    // Добавляем последнее слово, если оно есть
     if (start < line.length()) {
         string word = line.substr(start);
         if (!word.empty() && numWords < MAX_WORDS) {
             words[numWords++] = word;
         }
     }
-
-    return words;  // Возвращаем указатель на массив слов
+    return words; 
 }
 
 
@@ -68,7 +63,7 @@ bool SyntaxAnalyzer::isValidOperator(const string opLine, const int count_line) 
     if (line2.find("=") != string::npos) {
         line = line2.substr(0, line.find("=")) + " = " + line2.substr(line2.find("=") + 1);
     }
-    
+
     bool flag = maybe_error1;
     if ((line.front() == '{') && (maybe_error1)) {
         maybe_error1 = false;
@@ -99,7 +94,7 @@ bool SyntaxAnalyzer::isValidOperator(const string opLine, const int count_line) 
             continue;
         }
     }
-    cout << rS << " " << lS << endl;
+
     if (lS != rS) {
         is_error_flag = true;
         error(count_line, opLine, "Неправмльное  написание оператора ().");
@@ -131,7 +126,7 @@ bool SyntaxAnalyzer::isValidOperator(const string opLine, const int count_line) 
         maybe_error1 = flag;
         return false;
     }
-    
+
     int countT = (tokens[count_words - 1].size() == 1);
 
     // Проверяем оставшиеся токены после '='
@@ -165,7 +160,6 @@ bool SyntaxAnalyzer::isValidOperator(const string opLine, const int count_line) 
         }
     }
 
-    // Если цикл завершился, но последним токеном был оператор, это ошибка
     if (expectingOperand) {
         error_ = "Строка заканчивается на оператор без операнда.";
         is_error_flag = true;
@@ -176,13 +170,11 @@ bool SyntaxAnalyzer::isValidOperator(const string opLine, const int count_line) 
         maybe_error1 = flag;
         return false;
     }
-    cout << "correct\n";
-    // Если дошли до сюда, строка корректна
     return true;
 }
 
 
-bool SyntaxAnalyzer::is_condition(const string opLine, const int count_line) {
+bool SyntaxAnalyzer::isCondition(const string opLine, const int count_line) {
     string error_;
     int count_words = 0, count_words1 = 0, count_words2 = 0;
     // Разделяем строку на 
@@ -204,8 +196,8 @@ bool SyntaxAnalyzer::is_condition(const string opLine, const int count_line) {
 
     string* tokens1 = split(cond1, count_words1);
     string* tokens2 = split(cond2, count_words2);
-    bool expectingOperand = true; // Указывает, ожидаем ли операнд или оператор
-    bool expectingOperand2 = true; // Указывает, ожидаем ли операнд или оператор
+    bool expectingOperand = true; 
+    bool expectingOperand2 = true; 
 
     for (int i = 0; i < count_words1; i++) {
         if (expectingOperand) {
@@ -216,7 +208,7 @@ bool SyntaxAnalyzer::is_condition(const string opLine, const int count_line) {
                 error(count_line, opLine, error_);
                 return false;
             }
-            expectingOperand = false; // Следующий токен должен быть оператором
+            expectingOperand = false; 
         }
         else {
             // Ожидаем оператор: '+' или '-'
@@ -226,7 +218,7 @@ bool SyntaxAnalyzer::is_condition(const string opLine, const int count_line) {
                 error(count_line, opLine, error_);
                 return false;
             }
-            expectingOperand = true; // Следующий токен должен быть операндом
+            expectingOperand = true; 
         }
     }
 
@@ -240,29 +232,26 @@ bool SyntaxAnalyzer::is_condition(const string opLine, const int count_line) {
                 error(count_line, opLine, error_);
                 return false;
             }
-            expectingOperand2 = false; // Следующий токен должен быть оператором
+            expectingOperand2 = false;
         }
         else {
-            // Ожидаем оператор: '+' или '-'
             if (tokens2[i] != "+" && tokens2[i] != "-") {
                 error_ = "Ожидается оператор '+' или '-', встречено -> " + tokens2[i];
                 is_error_flag = true;
                 error(count_line, opLine, error_);
                 return false;
             }
-            expectingOperand2 = true; // Следующий токен должен быть операндом
+            expectingOperand2 = true; 
         }
     }
 
 
-    // Если цикл завершился, но последним токеном был оператор, это ошибка
     if (expectingOperand || expectingOperand2) {
         error_ = "Строка заканчивается на оператор без операнда.";
         is_error_flag = true;
         error(count_line, opLine, error_);
         return false;
     }
-    // Если дошли до сюда, строка корректна
     return true;
 }
 
@@ -274,23 +263,23 @@ void SyntaxAnalyzer::building_tree(const int count_line, const string line) {
         if (!treeFile.is_open()) {
             cerr << "Ошибка: не удалось открыть файл errors.txt для очистки.\n";
         }
-        treeFile.close(); // Закрываем файл после очистки
+        treeFile.close();
         cout << "An error has been detected, take a look at the file <errors.txt> to get acquainted.\n";
     }
-    if (is_cycle(line, count_line)) {
-        draw_cycle(line, 0);
+    if (isWhile(line, count_line)) {
+        printWhile(line, 0);
     }
-    else if (is_start_program(line, count_line)) {
-            draw_start_program(line);
+    else if (isBegin(line, count_line)) {
+        printBegin(line);
     }
-    else if (is_end_program(line, count_line)) {
-        draw_end_program(line);
+    else if (isEnd(line, count_line)) {
+        printEnd(line);
     }
-    else if (is_descriptions(line, count_line)) {
-        draw_descriptions(line, 0);
+    else if (isDescriptions(line, count_line)) {
+        printDescriptions(line, 0);
     }
     else if (isValidOperator(line, count_line)) {
-        draw_operators(line, 0);
+        printOperators(line, 0);
     }
 
     else {
@@ -310,71 +299,59 @@ void SyntaxAnalyzer::building_tree(const int count_line, const string line) {
 }
 
 void SyntaxAnalyzer::error(const int count_line, const string line, const string type_error) {
-    // Режим добавления
-   ofstream errorFile("errors.txt", ios::app);
+    ofstream errorFile("errors.txt", ios::app);
 
     if (!errorFile.is_open()) {
         cerr << "Ошибка: не удалось открыть файл errors.txt для записи." << std::endl;
         return;
     }
 
-    // Формируем строку с ошибкой
-    errorFile << "Ошибка в строке #" << count_line << " - " << type_error << ": " << line << std::endl;
+    errorFile << "Ошибка в строке #" << count_line << " - " << type_error << ": " << line << '\n';
 
     errorFile.close();
 }
 
 
-bool SyntaxAnalyzer::is_cycle(const string line, const int count_line) {
-    //std::string* lines = split(line, count_words); // Разбиваем строку на слова
-
-    size_t posSc = line.find('(');
+bool SyntaxAnalyzer::isWhile(const string line, const int count_line) {
+    size_t posSc1 = line.find('(');
     size_t posSc2 = line.rfind(')');
     size_t posSc3 = line.find('{');
     size_t posSc4 = line.find('}');
-    size_t posW = line.find("while");
+    size_t posWhi = line.find("while");
 
-    if (posW == string::npos || posSc == string::npos || posSc2 == string::npos) {
+    if (posWhi == string::npos || posSc1 == string::npos || posSc2 == string::npos)
         return false;
-    }
-    if (posSc4 == string::npos) {
-        maybe_error2++;
-    }
-    string whileS = line.substr(posW, 5);
-    int dist = posSc2 - posSc - 1;
-    string cond = line.substr(posSc + 1, dist);
-    bool flag2 = is_condition(cond, count_line);
 
-    if (posSc3 == string::npos) {
+    if (posSc4 == string::npos)
+        maybe_error2++;
+
+    string whileS = line.substr(posWhi, 5);
+    int dist = posSc2 - posSc1 - 1;
+    string cond = line.substr(posSc1 + 1, dist);
+    bool flag2 = isCondition(cond, count_line);
+
+    if (posSc3 == string::npos)
         maybe_error1 = true;
-    }
     return flag2;
 }
 
 
-// Проверяет, соответствует ли строка началу программы (PROGRAM <идентификатор>)
-bool SyntaxAnalyzer::is_start_program(const string line, const int count_line) {
+bool SyntaxAnalyzer::isBegin(const string line, const int count_line) {
     int count_words = 0;
     string* words = split(line, count_words);
 
-    // Проверка: строка должна состоять ровно из двух слов
-    if (count_words > 4) {
+    if (count_words > 5) 
         return false;
-    }
 
-    // Первое слово должно быть "PROGRAM", второе - валидным идентификатором
-    if (words[0] == "int"){
+    if (words[0] == "int") {
         string tmp = "";
-        for (int i = 1; i < count_words; i++) {
+        for (int i = 1; i < count_words; i++)
             tmp += words[i];
-        }
 
-        if ((tmp.back() != '{')) {
+        if ((tmp.back() != '{'))
             maybe_error1 = true;
-        }
-        else {
+        else
             tmp.pop_back();
-        }
 
         if (!(tmp.back() == ')')) {
             maybe_error1 = false;
@@ -400,49 +377,39 @@ bool isDigit(const string& lexeme) {
     return true;
 }
 
-// Проверяет, соответствует ли строка завершению программы (END PROGRAM <идентификатор>)
-bool SyntaxAnalyzer::is_end_program(const std::string line, const int count_line) {
+bool SyntaxAnalyzer::isEnd(const std::string line, const int count_line) {
     int count_words = 0;
     string* words = split(line, count_words);
 
-    // Проверка: строка должна состоять ровно из трех слов
-    if (count_words > 4) {
-        return false;
-    }
-
     int a = 0, b = 0;
+    cout << "a";
+    
     if (words[0] == "return") {
         string tmp = "";
         for (int i = 1; i < count_words; i++) {
             tmp += words[i];
         }
-
         if (!(tmp.back() == '}')) {
             return false;
         }
-        
+
         tmp.pop_back();
-        if (!(tmp.back() == ';')) {
+        if (!(tmp.back() == ';'))
             return false;
-        }
         tmp.pop_back();
-        
+
         bool res = isDigit(tmp);
-        if (res) {
-            is_error_flag = !(maybe_error2 > 0);
-            return is_error_flag;
-        }
-        else { return false; }
+        return isDigit(tmp);
     }
 
     return false;
 }
 
-bool SyntaxAnalyzer::is_descriptions(const string lines, const int count_line) {
+bool SyntaxAnalyzer::isDescriptions(const string lines, const int count_line) {
     int count_words = 0;
 
     string line = lines;
-    
+
     bool flag = (maybe_error1);
 
     if ((line.front() == '{') && (maybe_error1)) {
@@ -452,9 +419,10 @@ bool SyntaxAnalyzer::is_descriptions(const string lines, const int count_line) {
     else if ((line.front() != '{') && (!maybe_error1)) {
         maybe_error1 = false;
     }
-    else  {
-        return false;}
-     
+    else {
+        return false;
+    }
+
     if (line.back() == '}') {
         maybe_error2--;
         line.pop_back();
@@ -474,21 +442,18 @@ bool SyntaxAnalyzer::is_descriptions(const string lines, const int count_line) {
     int flagZ = 0, flagT = 0;
 
     int countT = (words[count_words - 1].size() == 1);
-    // Проверяем каждое слово после "INTEGER"
-    for (int i = 1; i < count_words - countT; ++i) {
-        // Удаляем запятую, если она есть в конце слова
+    for (int i = 1; i < count_words - countT; i++) {
 
         if (words[i].back() == ',') {
-            words[i].erase(words[i].size() - 1); // Убираем последнюю запятую
+            words[i].erase(words[i].size() - 1);
             flagZ++;
         }
 
         if (words[i].back() == ';') {
-            words[i].erase(words[i].size() - 1); // Убираем последнюю запятую
+            words[i].erase(words[i].size() - 1); 
             flagT++;
         }
 
-        // Проверяем валидность идентификатора
         if (!isValidIdentifier(words[i])) {
             is_error_flag = true;
             error(count_line, line, "Недопустимый индентификатор: " + words[i]);
@@ -508,7 +473,7 @@ bool SyntaxAnalyzer::is_descriptions(const string lines, const int count_line) {
 }
 
 
-void SyntaxAnalyzer::draw_operators(const string cline, int num) {
+void SyntaxAnalyzer::printOperators(const string cline, int num) {
     dist = 2;
     printWhiteSpace(dist);
     outputFile << "Operators\n";
@@ -531,7 +496,7 @@ void SyntaxAnalyzer::draw_operators(const string cline, int num) {
 
     string left_var = tokens[0];
     string equal_sign = tokens[1];
-    
+
     printWhiteSpace(dist + 5);
     outputFile << left_var << "  [Id]\n";
     printWhiteSpace(dist + 5);
@@ -546,7 +511,7 @@ void SyntaxAnalyzer::draw_operators(const string cline, int num) {
             if (token == "+" || token == "-") {
                 printWhiteSpace(dist + 5 + tmp);
                 outputFile << token << "  [MathematicalOperation]\n";
-                expectOperator = false; 
+                expectOperator = false;
                 tmp += 1;
             }
         }
@@ -569,7 +534,7 @@ void SyntaxAnalyzer::draw_operators(const string cline, int num) {
                 outputFile << token << "  [Id]\n";
             else
                 outputFile << token << "  [Const]\n";
-            expectOperator = true; // Следующий токен должен быть оператором
+            expectOperator = true; 
         }
     }
     printWhiteSpace(dist + 5);
@@ -581,19 +546,16 @@ void SyntaxAnalyzer::draw_operators(const string cline, int num) {
 }
 
 
-bool SyntaxAnalyzer::tmp_print(string* & tokens, int count_words, int num) {
+bool SyntaxAnalyzer::printExpr(string*& tokens, int count_words, int num) {
     int tmp = 2;
-    bool expectOperator = false; 
+    bool expectOperator = false;
     for (int i = 0; i < count_words; ++i) {
         string token = tokens[i];
 
         if (expectOperator) {
-            
+
             if (token == "+" || token == "-") {
-                for (int i = 0; i < tmp; i++) {
-                    outputFile << "  ";
-                }
-                printWhiteSpace(dist + tmp - 2);
+                printWhiteSpace(dist + tmp + 3);
                 outputFile << token << "  [MathematicalOperation]\n";
                 expectOperator = false;
                 tmp += 2;
@@ -606,32 +568,28 @@ bool SyntaxAnalyzer::tmp_print(string* & tokens, int count_words, int num) {
 
             printWhiteSpace(dist + tmp);
             outputFile << "Expr\n";
+            printWhiteSpace(dist + tmp + 3);
+            outputFile << "  SimpleExpr\n";
             for (int i = 0; i < tmp + 1; i++) {
                 outputFile << "  ";
             }
-            printWhiteSpace(dist + tmp + 2);
-            outputFile << "SimpleExpr\n";
-            for (int i = 0; i < tmp + 1; i++) {
-                outputFile << "  ";
-            }
-            printWhiteSpace(dist + tmp + 4);
+            printWhiteSpace(dist + tmp +  5);
             if (isValidIdentifier(token))
                 outputFile << token << "  [Id]\n";
             else
                 outputFile << token << "  [Const]\n";
-            expectOperator = true; 
+            expectOperator = true;
         }
     }
 
     return expectOperator;
 }
 
-void SyntaxAnalyzer::draw_operators_cycle(const string line, int num) {
-    printWhiteSpace(dist + num + 2);
+void SyntaxAnalyzer::printOpearatorsWhile(const string line, int num) {
+    printWhiteSpace(dist + num - 7);
     outputFile << "Conditon\n";
 
-    // Разделяем строку на левый и правый операнд
-    vector<string> comb = { "==", "<=", ">=", "!=", "<", ">"};
+    vector<string> comb = { "==", "<=", ">=", "!=", "<", ">" };
     int i = 0;
     size_t equal_pos = string::npos;
     while (equal_pos == string::npos) {
@@ -641,32 +599,33 @@ void SyntaxAnalyzer::draw_operators_cycle(const string line, int num) {
             return;
         }
     }
-    string left_var = line.substr(0, equal_pos); // Левая часть
-    string right_expr = line.substr(equal_pos + comb[i].size()); // Правая часть
+    string left_var = line.substr(0, equal_pos); 
+    string right_expr = line.substr(equal_pos + comb[i].size()); 
 
 
     int first = 0, second = 0;
     string* tokens1 = split(left_var, first);
     string* tokens2 = split(right_expr, second);
 
-    bool first2 = tmp_print(tokens1, first, num);
+    bool first2 = printExpr(tokens1, first, num + 2);
     printWhiteSpace(dist + num + 5);
     outputFile << comb[i] << " [RelationOperator]\n";
-    bool second2 = tmp_print(tokens2, second, num);
-    
+    bool second2 = printExpr(tokens2, second, num + 2);
+
 }
 
-void SyntaxAnalyzer::draw_expression(const string& expr, const string& indent, int num) {
+void SyntaxAnalyzer::printExpression(const string& expr, const string& indent, int num) {
     string trimmed_expr = expr;
-    trim(trimmed_expr); 
-    outputFile << indent << "SimpleExpr\n";
+    trim(trimmed_expr);
+    printWhiteSpace(dist + num);
+    outputFile << "SimpleExpr\n";
     size_t operator_pos = trimmed_expr.find_first_of("+-");
     if (operator_pos == string::npos) {
-        // Если нет операторов, это простое выражение
+        printWhiteSpace(dist + num);
         if (isDigit(trimmed_expr))
-            outputFile << indent << " " << trimmed_expr << "  [Const]\n";
+            outputFile << trimmed_expr << "  [Const]\n";
         else
-            outputFile << indent << " " << trimmed_expr << "  [Id]\n";
+            outputFile << trimmed_expr << "  [Id]\n";
     }
     else {
         string left = trimmed_expr.substr(0, operator_pos);
@@ -675,49 +634,50 @@ void SyntaxAnalyzer::draw_expression(const string& expr, const string& indent, i
 
         trim(left);
         trim(right);
-        
-        if (isDigit(left)) 
-            outputFile << indent << " " << left << "  [Const]\n";
-        else
-            outputFile << indent << " " << left << "  [Id]\n";
 
-        outputFile << indent << " " << op << "  [MathematicalOperation]\n";
-        draw_expression(right, indent + " ", 0);
+        printWhiteSpace(dist + num + 7);
+        if (isDigit(left))
+            outputFile << left << "  [Const]\n";
+        else
+            outputFile << left << "  [Id]\n";
+        printWhiteSpace(dist + num + 5);
+        outputFile << op << "  [MathematicalOperation]\n";
+        printExpression(right, indent + " ", num + 2);
     }
 }
 
-void SyntaxAnalyzer::draw_cycle(const string line, int num) {
+void SyntaxAnalyzer::printWhile(const string curr, int num) {
     dist = 2;
     printWhiteSpace(dist);
     outputFile << "Operators\n";
     printWhiteSpace(dist + 2);
     outputFile << "Op\n";
 
-    size_t for_pos = line.find("while");
-    size_t sc1 = line.find("(");
-    size_t sc2 = line.rfind(")");
+    size_t for_pos = curr.find("while");
+    size_t sc1 = curr.find("(");
+    size_t sc2 = curr.rfind(")");
 
     printWhiteSpace(dist + 5);
     outputFile << "while [KeyWord]\n";
     printWhiteSpace(dist + 5);
     outputFile << "(  [StaplesL]\n";
-    
+
     int dist = sc2 - sc1 - 1;
-    string cond = line.substr(sc1 + 1, dist);
-    draw_operators_cycle(cond, 5);
+    string cond = curr.substr(sc1 + 1, dist);
+    printOpearatorsWhile(cond, 12);
     dist = 2;
     printWhiteSpace(dist + 5);
     outputFile << ")  [StaplesR]\n";
     printWhiteSpace(dist + 5);
     outputFile << "{  [CurlyBraceL]\n";
-    if (line.back() == '}') {
+    if (curr.back() == '}') {
         printWhiteSpace(dist + 5);
         outputFile << "  }  [CurlyBraceR]\n";
     }
 }
 
 
-void SyntaxAnalyzer::draw_start_program(const string line) {
+void SyntaxAnalyzer::printBegin(const string line) {
     outputFile << "Function\n";
     printWhiteSpace(dist);
     dist += 2;
@@ -725,44 +685,43 @@ void SyntaxAnalyzer::draw_start_program(const string line) {
     printWhiteSpace(dist);
 
     size_t prog_pos = line.find("int");
-    string program_res = line.substr(prog_pos + 4); // Имя программы
+    string programName = line.substr(prog_pos + 4);
 
-    while (!isValidIdentifier(program_res)) {
-        program_res.pop_back();
+    while (!isValidIdentifier(programName)) {
+        programName.pop_back();
     }
-    
+
     outputFile << "Type\n";
     printWhiteSpace(dist + 3);
     outputFile << "int  [KeyWord]\n";
     printWhiteSpace(dist);
     outputFile << "FunctionName\n";
     printWhiteSpace(dist + 3);
-    outputFile << "" << program_res << "  [Id]\n";
+    outputFile << "" << programName << "  [Id]\n";
     printWhiteSpace(dist);
     outputFile << "(  [StaplesL]\n";
     printWhiteSpace(dist);
     outputFile << ")  [StaplesR]\n";
-    printWhiteSpace(dist
-    );
+    printWhiteSpace(dist);
     outputFile << "{  [CurlyBraceL]\n";
 
 }
 
-void SyntaxAnalyzer::draw_end_program(const string line) {
+void SyntaxAnalyzer::printEnd(const string line) {
     dist = 2;
     printWhiteSpace(dist);
     outputFile << "End\n";
 
-    size_t end_pos = line.find("return");
-    string program_res = line.substr(end_pos + 7); // Имя программы
+    size_t endPos = line.find("return");
+    string programRes = line.substr(endPos + 7);
 
-    while (!isDigit(program_res)) {
-        program_res.pop_back();
+    while (!isDigit(programRes)) {
+        programRes.pop_back();
     }
     printWhiteSpace(dist);
     outputFile << "  return  [KeyWord]\n";
     printWhiteSpace(dist);
-    outputFile << "  " << program_res << "  [Const]\n";
+    outputFile << "  " << programRes << "  [Const]\n";
     printWhiteSpace(dist);
     outputFile << "  ;  [Semicolon]\n";
     printWhiteSpace(dist);
@@ -776,13 +735,13 @@ void SyntaxAnalyzer::draw_end_program(const string line) {
 
 }
 
-void SyntaxAnalyzer::draw_varlist(const string lin, int num) {
+void SyntaxAnalyzer::printVarList(const string curr, int num) {
     size_t pos = 0;
     size_t comma_pos;
-    string line = lin;
+    string line = curr;
     line.pop_back();
-    // Разделение на переменные и вывод с учетом вложенности
-    while ((comma_pos = line.find(',', pos)) != std::string::npos) {
+
+    while ((comma_pos = line.find(',', pos)) != string::npos) {
         num += 3;
         printWhiteSpace(dist + num);
         outputFile << line.substr(pos, comma_pos - pos) << "  [Id]\n";
@@ -794,7 +753,6 @@ void SyntaxAnalyzer::draw_varlist(const string lin, int num) {
         pos = comma_pos + 1;
     }
 
-    // Последняя переменная, после последней запятой
     bool flag = (line.back() == '}');
     if (flag) {
         line.pop_back();
@@ -809,15 +767,15 @@ void SyntaxAnalyzer::draw_varlist(const string lin, int num) {
     }
 }
 
-void SyntaxAnalyzer::draw_descriptions(const string line, int num) {
+void SyntaxAnalyzer::printDescriptions(const string curr, int num) {
     dist = 2;
     printWhiteSpace(dist);
     outputFile << "Descriptions\n";
     printWhiteSpace(dist + 2);
     outputFile << "Descr\n";
 
-    size_t type_pos = line.find("int");
-    string vars = line.substr(type_pos + 3); // Переменные после типа
+    size_t type_pos = curr.find("int");
+    string vars = curr.substr(type_pos + 3); 
 
     printWhiteSpace(dist + 5);
     outputFile << "Type\n";
@@ -827,5 +785,5 @@ void SyntaxAnalyzer::draw_descriptions(const string line, int num) {
     // Вложенные Varlist
     printWhiteSpace(dist + 5);
     outputFile << "Varlist\n";
-    draw_varlist(vars, 5);
+    printVarList(vars, 5);
 }
